@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    container_name: myPizzaDB
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USERNAME}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - '${DATABASE_PORT}:3306'
+    # volumes:
+    #   - ./db:/var/lib/mysql
