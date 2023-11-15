@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Pizza {
+    id          Int          @id @default(autoincrement())
+    name        String       @unique
+    price       Float
+    orderItems  OrderItem[]
+    ingredients Ingredient[]
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+
+    @@map("pizzas")
+}
+
+model OrderItem {
+    id        Int      @id @default(autoincrement())
+    pizza     Pizza    @relation(fields: [pizzaId], references: [id])
+    pizzaId   Int
+    order     Order    @relation(fields: [orderId], references: [id])
+    orderId   Int
+    quantity  Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("order_items")
+}
+
+model Order {
+    id         Int         @id @default(autoincrement())
+    orderItems OrderItem[]
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
+
+    @@map("orders")
+}
+
+model Ingredient {
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    pizzas    Pizza[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("ingredients")
+}
